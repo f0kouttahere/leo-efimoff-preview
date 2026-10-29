@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Leo Efimoff</title>
+<meta name="description" content="About Leo Efimoff and a look inside the studio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#fff; --ink:#111; --muted:#8a8a8a; --line:#ececec; --gutter:clamp(16px,4vw,56px); --gap:clamp(16px,2.4vw,40px); --max:1680px; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--ink); font:300 15px/1.7 "Inter",system-ui,-apple-system,sans-serif; letter-spacing:.01em; -webkit-font-smoothing:antialiased; }
+  a { color:inherit; text-decoration:none; }
+  button { font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+  a:focus-visible,button:focus-visible { outline:1px solid var(--ink); outline-offset:5px; }
+  .wrap { max-width:var(--max); margin:0 auto; padding:0 var(--gutter); }
+  header { margin-top:calc(0.4in * 2 / 3); position:sticky; top:0; z-index:10; background:rgba(255,255,255,.94); backdrop-filter:blur(8px); }
+  header .wrap { display:flex; justify-content:space-between; align-items:center; height:76px; }
+  .name { font-weight:400; font-size:42px; letter-spacing:.24em; text-transform:uppercase; white-space:nowrap; }
+  nav { display:flex; align-items:center; gap:clamp(16px,3vw,40px); font-size:13px; }
+  nav a,.lang { color:var(--muted); transition:color .2s; }
+  nav a:hover,nav [aria-current="page"],.lang:hover,.lang[aria-pressed="true"] { color:var(--ink); }
+  .langs { color:var(--line); }
+  main { padding-top:clamp(30px,4.5vw,66px)!important; padding-bottom:clamp(56px,8vw,128px)!important; }
+  .profile { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(32px,7vw,112px); align-items:start; }
+  .profile figure { width:100%; max-width:600px; }
+  .about-copy { max-width:540px; padding:0; }
+  .about-copy p { color:#575757; font-size:clamp(15px,1.3vw,17px); }
+  .about-copy p + p { margin-top:1.5em; }
+  .studio-photos { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--gap); margin-top:clamp(40px,7vw,100px); align-items:start; }
+  figure { min-width:0; }
+  figure img { display:block; width:100%; height:auto; background:#f2f2f2; }
+  footer { border-top:1px solid var(--line); font-size:12px; color:var(--muted); }
+  footer .wrap { padding-top:32px; padding-bottom:32px; }
+  @media(max-width:1000px) { .studio-photos { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media(max-width:760px) { .profile { grid-template-columns:minmax(0,1fr); gap:24px; } .about-copy { padding:0; } .profile figure { max-width:none; } }
+  @media(max-width:560px) {
+    .name { font-size:clamp(26px,8.8vw,42px); letter-spacing:.04em; }
+    header .wrap { flex-direction:column; align-items:flex-start; justify-content:center; gap:4px; height:auto; padding-top:16px; padding-bottom:14px; }
+    nav { width:100%; gap:20px; }
+    nav .langs { margin-left:auto; }
+    .studio-photos { grid-template-columns:minmax(0,1fr); }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="name" href="index.html">Leo Efimoff</a>
+    <nav aria-label="Main navigation">
+      <a href="index.html" data-i18n="nav_works">Works</a>
+      <a href="about.html" aria-current="page" data-i18n="nav_about">About</a>
+      <a href="contacts.html" data-i18n="nav_contacts">Contacts</a>
+      <span class="langs"><button class="lang" data-lang="en" aria-pressed="true">EN</button> / <button class="lang" data-lang="es" aria-pressed="false">ES</button></span>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <section class="profile" aria-label="Artist biography">
+    <figure>
+      <img data-about-photo="02" src="images/about/about-02-bw.webp" srcset="images/about/about-02-bw-480.webp 480w, images/about/about-02-bw.webp 960w" sizes="(max-width:760px) 100vw, 50vw" width="960" height="1200" alt="A view through the studio, with sculptures, shelves and a seated figure." fetchpriority="high" decoding="async">
+    </figure>
+    <div class="about-copy">
+
+      <p data-i18n="about">Leo Efimoff is a sculptor, artist, and photographer. He makes sculpture and decorative objects for interiors. Each piece is made by hand using distinctive techniques and materials, and is either one of a kind or produced in a small edition.</p>
+      <p class="biography-source" lang="en">Born in Pskov in 1980, Leo Efimoff started out as a photographer and video director before turning to sculpture, especially the abstract forms he believes fire the imagination. He draws on a wide range of sources, from the natural world to contemporary digital art, and does not limit himself to any particular material or shape.</p>
+      <p class="biography-source" lang="en">In a workshop he describes as a mini-factory, he makes one-of-a-kind sculptures, each with its own character, without a set story or title attached. He treats every piece as a discovery, guided by the idea that art should emerge on its own, without contrived meaning. Nothing is planned down to the last detail; the surprise is part of the point.</p>
+      <p class="biography-source" lang="en">Collectors and designers seek out his work. His sculptures do more than make a space look better; they give the rooms they live in real philosophical depth.</p>
+    </div>
+  </section>
+  <section class="studio-photos" aria-label="Inside the studio">
+    <figure><img data-about-photo="01" src="images/about/about-01-bw.webp" srcset="images/about/about-01-bw-480.webp 480w, images/about/about-01-bw.webp 960w" sizes="(max-width:560px) 100vw, (max-width:1000px) 50vw, 33vw" width="960" height="1200" alt="Shaping a sculpture by hand at a studio workbench." loading="lazy" decoding="async"></figure>
+    <figure><img data-about-photo="03" src="images/about/about-03-bw.webp" srcset="images/about/about-03-bw-480.webp 480w, images/about/about-03-bw.webp 960w" sizes="(max-width:560px) 100vw, (max-width:1000px) 50vw, 33vw" width="960" height="1200" alt="Working at a grinding machine, with sparks at the tool." loading="lazy" decoding="async"></figure>
+
+    <figure><img data-about-photo="06" src="images/about/about-06-bw.webp" srcset="images/about/about-06-bw-480.webp 480w, images/about/about-06-bw.webp 960w" sizes="(max-width:560px) 100vw, (max-width:1000px) 50vw, 33vw" width="960" height="1200" alt="Welding a piece at the workbench, wearing a protective mask." loading="lazy" decoding="async"></figure>
+  </section>
+</main>
+<footer><div class="wrap">© <span id="year"></span> Leo Efimoff</div></footer>
+<script>
+  // Existing About copy is preserved, not a newly commissioned biography.
+  const TEXT = {
+    en: {
+      nav_works:"Works", nav_about:"About", nav_contacts:"Contacts",
+      about:"Leo Efimoff is a sculptor, artist, and photographer. He makes sculpture and decorative objects for interiors. Each piece is made by hand using distinctive techniques and materials, and is either one of a kind or produced in a small edition."
+    },
+    es: {
+      nav_works:"Obras", nav_about:"Sobre el artista", nav_contacts:"Contacto",
+      about:"Leo Efimoff es escultor, artista y fotógrafo. Crea esculturas y objetos decorativos para interiores. Cada pieza está hecha a mano y existe como ejemplar único o en una pequeña edición."
+    }
+  };
+  let lang="en";
+  try { lang=localStorage.getItem("lang") || (navigator.language.startsWith("es")?"es":"en"); } catch(e) {}
+  if(!TEXT[lang]) lang="en";
+  function setLang(language) {
+    if(!TEXT[language]) return;
+    lang=language;
+    try { localStorage.setItem("lang",lang); } catch(e) {}
+    document.documentElement.lang=lang;
+    document.querySelectorAll("[data-i18n]").forEach(element=>{element.textContent=TEXT[lang][element.dataset.i18n];});
+    document.querySelectorAll(".lang").forEach(button=>button.setAttribute("aria-pressed",button.dataset.lang===lang));
+  }
+  document.querySelectorAll(".lang").forEach(button=>{button.onclick=()=>setLang(button.dataset.lang);});
+  document.getElementById("year").textContent=new Date().getFullYear();
+  setLang(lang);
+</script>
+</body>
+</html>

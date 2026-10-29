@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leo Efimoff</title>
+<meta name="description" content="Leo Efimoff — sculpture and objects for interiors.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #111111;
+    --muted: #8a8a8a;
+    --line: #ececec;
+    --placeholder: #f2f2f2;
+    --gutter: clamp(16px, 4vw, 56px);
+    --gap: clamp(10px, 2.4vw, 40px);
+    --max: 1680px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 300 15px/1.7 "Inter", system-ui, -apple-system, sans-serif;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+  body.locked { overflow: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+  header { margin-top: calc(0.4in * 2 / 3); position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); }
+  header .wrap { display: flex; justify-content: space-between; align-items: center; height: 76px; }
+  .name { font-weight: 400; font-size: 42px; letter-spacing: 0.24em; text-transform: uppercase; white-space: nowrap; }
+  nav { display: flex; align-items: center; gap: clamp(16px, 3vw, 40px); font-size: 13px; }
+  nav a, .lang { color: var(--muted); transition: color .2s; }
+  nav a:hover, .lang:hover, .lang[aria-pressed="true"] { color: var(--ink); }
+  .langs { color: var(--line); }
+
+  section { padding: clamp(48px, 8vw, 128px) 0; }
+  .intro { padding: clamp(42px, 8.25vw, 126px) 0 clamp(30px, 4.5vw, 72px); }
+  .intro p { max-width: 520px; color: var(--muted); font-size: clamp(15px, 1.3vw, 17px); }
+
+  #works { padding-top: 0; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
+  .work { display: block; width: 100%; text-align: left; cursor: zoom-in; }
+  /* Photos are 3:4 to 4:5; this ratio trims no more than ~3% from any edge. */
+  .frame { aspect-ratio: 39 / 50; background: var(--placeholder); overflow: hidden; }
+  .frame img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity .6s ease, transform 1.2s ease; }
+  .frame img.loaded { opacity: 1; }
+  .work:hover .frame img { transform: scale(1.025); }
+
+  .about p { max-width: 580px; }
+
+  footer { border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+  footer .wrap { padding-top: 32px; padding-bottom: 32px; }
+
+  /* Full-screen viewer */
+  .viewer {
+    position: fixed; inset: 0; z-index: 20; background: var(--bg);
+    display: none; align-items: center; justify-content: center;
+    padding: 72px clamp(16px, 8vw, 120px);
+    touch-action: pan-y;
+  }
+  .viewer.open { display: flex; }
+  .viewer figure { height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .viewer img { flex: 0 1 auto; min-height: 0; max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
+  .viewer .bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 72px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 var(--gutter); font-size: 13px; color: var(--muted);
+  }
+  .viewer .close:hover { color: var(--ink); }
+  .viewer .arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); transition: color .2s;
+  }
+  .viewer .arrow:hover { color: var(--ink); }
+  .viewer .prev { left: clamp(4px, 2vw, 32px); }
+  .viewer .next { right: clamp(4px, 2vw, 32px); }
+  .viewer .arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+  .viewer figcaption { flex: none; padding: 16px 16px 0; text-align: center; font-size: 13px; }
+  .viewer figcaption:empty { display: none; }
+  .viewer figcaption span { display: block; color: var(--muted); font-size: 12px; }
+
+  @media (min-width: 1400px) {
+    .grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .work:hover .frame img { transform: none; }
+  }
+  @media (max-width: 560px) {
+    .name { font-size: clamp(26px, 8.8vw, 42px); letter-spacing: 0.04em; }
+    header .wrap { flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px; height: auto; padding-top: 16px; padding-bottom: 14px; }
+    nav { width: 100%; gap: 20px; }
+    nav .langs { margin-left: auto; }
+    .viewer { padding: 64px 0 56px; }
+    .viewer .bar { height: 64px; }
+    .viewer .arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="name" href="#" data-i18n="name">Leo Efimoff</a>
+    <nav>
+      <a href="#works" data-i18n="nav_works">Works</a>
+      <a href="about.html" data-i18n="nav_about">About</a>
+      <a href="contacts.html" data-i18n="nav_contacts">Contacts</a>
+      <span class="langs">
+        <button class="lang" data-lang="en" aria-pressed="true">EN</button>
+        /
+        <button class="lang" data-lang="es" aria-pressed="false">ES</button>
+      </span>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <p id="artist-quote" lang="en">“Art creates ugly things that often grow more beautiful with time. Fashion creates beautiful things that always grow ugly with time.”</p>
+  </section>
+
+  <section id="works">
+    <div class="grid" id="grid"></div>
+  </section>
+</main>
+
+<footer><div class="wrap">© <span id="year"></span> <span data-i18n="name">Leo Efimoff</span></div></footer>
+
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Photo">
+  <div class="bar">
+    <span id="counter"></span>
+    <button class="close" id="close" data-i18n="close">Close</button>
+  </div>
+  <button class="arrow prev" id="prev" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 4 7 12l8 8"/></svg></button>
+  <figure>
+    <img id="viewer-img" alt="">
+    <figcaption id="viewer-cap"></figcaption>
+  </figure>
+  <button class="arrow next" id="next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="m9 4 8 8-8 8"/></svg></button>
+</div>
+
+<script src="works.js"></script>
+<script>
+  const TEXT = {
+    en: {
+      name: "Leo Efimoff", nav_works: "Works", nav_about: "About", nav_contacts: "Contacts", close: "Close", work: "Work",
+      intro: "Sculpture and objects for interiors. Each piece is made by hand."
+    },
+    es: {
+      name: "Leo Efimoff", nav_works: "Obras", nav_about: "Sobre el artista", nav_contacts: "Contacto", close: "Cerrar", work: "Obra",
+      intro: "Escultura y objetos para interiores. Cada pieza está hecha a mano."
+    }
+  };
+
+  const works = window.WORKS;
+  const grid = document.getElementById("grid");
+  const viewer = document.getElementById("viewer");
+  const viewerImg = document.getElementById("viewer-img");
+  const viewerCap = document.getElementById("viewer-cap");
+  const counter = document.getElementById("counter");
+  const full = w => `images/work-${w.id}.webp`;
+  const small = w => `images/work-${w.id}-720.webp`;
+  const alt = (w, i) => w.title ? w.title[lang] : `${TEXT[lang].name} — ${TEXT[lang].work} ${i + 1}`;
+  let lang = "en";
+  let current = 0;
+  try { lang = localStorage.getItem("lang") || (navigator.language.startsWith("es") ? "es" : "en"); } catch (e) {}
+  if (!TEXT[lang]) lang = "en";
+
+  function renderWorks() {
+    grid.innerHTML = "";
+    works.forEach((w, i) => {
+      const item = document.createElement("button");
+      item.className = "work";
+      item.innerHTML = `<div class="frame"><img src="${small(w)}"
+          srcset="${small(w)} 720w, ${full(w)} 1440w"
+          sizes="(max-width: 760px) 50vw, (max-width: 1399px) 33vw, 420px"
+          alt="${alt(w, i)}" loading="${i < 6 ? "eager" : "lazy"}" decoding="async"></div>`;
+      const img = item.querySelector("img");
+      if (img.complete) img.classList.add("loaded");
+      else img.onload = () => img.classList.add("loaded");
+      item.onclick = () => openViewer(i);
+      grid.appendChild(item);
+    });
+  }
+
+  function show(i) {
+    current = (i + works.length) % works.length;
+    const w = works[current];
+    viewerImg.src = full(w);
+    viewerImg.alt = alt(w, current);
+    counter.textContent = `${current + 1} / ${works.length}`;
+    viewerCap.innerHTML = w.title ? `${w.title[lang]}${w.meta ? `<span>${w.meta[lang]}</span>` : ""}` : "";
+    [current - 1, current + 1].forEach(n => { new Image().src = full(works[(n + works.length) % works.length]); });
+  }
+  function openViewer(i) { show(i); viewer.classList.add("open"); document.body.classList.add("locked"); }
+  function closeViewer() { viewer.classList.remove("open"); document.body.classList.remove("locked"); }
+
+  document.getElementById("prev").onclick = e => { e.stopPropagation(); show(current - 1); };
+  document.getElementById("next").onclick = e => { e.stopPropagation(); show(current + 1); };
+  document.getElementById("close").onclick = closeViewer;
+  viewer.onclick = e => { if (e.target === viewer || e.target.tagName === "FIGURE") closeViewer(); };
+  document.addEventListener("keydown", e => {
+    if (!viewer.classList.contains("open")) return;
+    if (e.key === "Escape") closeViewer();
+    if (e.key === "ArrowLeft") show(current - 1);
+    if (e.key === "ArrowRight") show(current + 1);
+  });
+  let touchX = null;
+  viewer.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; }, { passive: true });
+  viewer.addEventListener("touchend", e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+    touchX = null;
+  });
+
+  function setLang(l) {
+    lang = l;
+    try { localStorage.setItem("lang", l); } catch (e) {}
+    document.documentElement.lang = l;
+    document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = TEXT[l][el.dataset.i18n]);
+    document.querySelectorAll(".lang").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
+    renderWorks();
+  }
+  document.querySelectorAll(".lang").forEach(b => b.onclick = () => setLang(b.dataset.lang));
+  document.getElementById("year").textContent = new Date().getFullYear();
+  setLang(lang);
+</script>
+</body>
+</html>

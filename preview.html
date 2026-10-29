@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leo Efimoff — desktop / mobile</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#ededed;color:#222;font:14px system-ui,sans-serif}nav{position:sticky;top:0;z-index:1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;background:#fff;border-bottom:1px solid #ccc}button{padding:10px 14px;border:1px solid #bbb;background:#fff;color:#222;cursor:pointer;border-radius:4px}button[aria-pressed="true"]{background:#222;color:#fff}#status{font-size:12px;color:#666}main{padding:16px;overflow:hidden}#stage{position:relative;margin:auto}iframe{display:block;border:0;background:white;transform-origin:top left;position:absolute;top:0;left:0}
+</style>
+</head>
+<body>
+<nav aria-label="Режим предпросмотра">
+<button id="mobile" aria-pressed="true">Мобильная · 390 × 844</button>
+<button id="desktop" aria-pressed="false">Компьютер · 1440 × 1000</button>
+<button id="refresh">Обновить</button>
+<span id="status" role="status">Автообновление включено</span>
+</nav>
+<main><div id="stage"><iframe id="site" title="Текущая рабочая версия сайта" src="index.html"></iframe></div></main>
+<script>
+const frame=document.getElementById('site'),stage=document.getElementById('stage'),status=document.getElementById('status');
+if(new URLSearchParams(location.search).get('page')==='about')frame.src='about.html';
+let mode=localStorage.getItem('preview-mode')==='desktop'?'desktop':'mobile';
+function layout(){const [w,h]=mode==='mobile'?[390,844]:[1440,1000];const scale=Math.min(1,Math.max(1,document.documentElement.clientWidth-32)/w);frame.style.width=w+'px';frame.style.height=h+'px';frame.style.transform=`scale(${scale})`;stage.style.width=w*scale+'px';stage.style.height=h*scale+'px';for(const name of ['mobile','desktop'])document.getElementById(name).setAttribute('aria-pressed',String(mode===name));}
+for(const name of ['mobile','desktop'])document.getElementById(name).onclick=()=>{mode=name;localStorage.setItem('preview-mode',mode);layout();};
+function refresh(){const url=new URL(frame.contentWindow.location.href);url.searchParams.set('preview',Date.now());frame.src=url.href;status.textContent='Обновлено · автообновление включено';}
+document.getElementById('refresh').onclick=refresh;
+window.addEventListener('resize',layout);layout();
+let signature=null,busy=false;
+async function check(){if(busy)return;busy=true;try{const parts=await Promise.all(['index.html','works.js','about.html'].map(async url=>{const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error(r.status);return r.text();}));const next=JSON.stringify(parts);if(signature!==null&&signature!==next)refresh();signature=next;}catch(e){status.textContent='Нет связи · нажмите «Обновить»';}finally{busy=false;}}
+check();setInterval(check,2000);
+</script>
+</body>
+</html>
