@@ -211,8 +211,15 @@
           sizes="(max-width: 760px) 50vw, (max-width: 1399px) 33vw, 420px"
           alt="${alt(w, i)}" loading="eager" decoding="async" fetchpriority="${i < 6 ? "high" : "auto"}"></div>`;
       const img = item.querySelector("img");
-      if (img.complete) img.classList.add("loaded");
-      else img.onload = () => img.classList.add("loaded");
+      // A cached image can finish before this handler is attached, so trust the
+      // decoded state as well as the event — otherwise the tile stays at opacity 0.
+      const markLoaded = () => img.classList.add("loaded");
+      if (img.complete && img.naturalWidth > 0) markLoaded();
+      else {
+        img.onload = markLoaded;
+        img.onerror = markLoaded;
+        if (img.decode) img.decode().then(markLoaded, () => {});
+      }
       item.onclick = () => openViewer(i);
       grid.appendChild(item);
     });
