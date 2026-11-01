@@ -88,6 +88,21 @@
   .viewer figcaption:empty { display: none; }
   .viewer figcaption span { display: block; color: var(--muted); font-size: 12px; }
 
+  /* Swipe affordance: two thin arrows that slide outward, no words. */
+  .swipe-hint {
+    position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
+    color: var(--muted); pointer-events: none; opacity: 0; transition: opacity .5s ease;
+  }
+  .viewer.open .swipe-hint { opacity: 1; }
+  .swipe-hint svg { width: 64px; height: 16px; display: block; }
+  .swipe-hint .hint-left  { animation: hint-l 2.6s ease-in-out infinite; }
+  .swipe-hint .hint-right { animation: hint-r 2.6s ease-in-out infinite; }
+  @keyframes hint-l { 0%,55%,100% { transform: translateX(0); opacity:.55 } 25% { transform: translateX(-4px); opacity:1 } }
+  @keyframes hint-r { 0%,55%,100% { transform: translateX(0); opacity:.55 } 25% { transform: translateX(4px);  opacity:1 } }
+  @media (prefers-reduced-motion: reduce) { .swipe-hint .hint-left, .swipe-hint .hint-right { animation: none; } }
+  /* Only phones: on desktop the arrows and keyboard are self-evident. */
+  @media (min-width: 761px) { .swipe-hint { display: none; } }
+
   @media (min-width: 1400px) {
     .grid { grid-template-columns: repeat(4, 1fr); }
   }
@@ -146,6 +161,12 @@
     <figcaption id="viewer-cap"></figcaption>
   </figure>
   <button class="arrow next" id="next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="m9 4 8 8-8 8"/></svg></button>
+  <div class="swipe-hint" aria-hidden="true">
+    <svg viewBox="0 0 64 16" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+      <path class="hint-left" d="M24 8H8M12 4 8 8l4 4"/>
+      <path class="hint-right" d="M40 8h16M52 4l4 4-4 4"/>
+    </svg>
+  </div>
 </div>
 
 <script src="works.js"></script>
