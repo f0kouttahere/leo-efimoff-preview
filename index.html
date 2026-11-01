@@ -57,7 +57,8 @@
   .about p { max-width: 580px; }
 
   footer { border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
-  footer .wrap { padding-top: 32px; padding-bottom: 32px; }
+  footer .wrap { padding-top: 32px; padding-bottom: 32px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px 24px; flex-wrap: wrap; }
+  footer .credit { font-size: 11px; letter-spacing: .05em; }
 
   /* Full-screen viewer */
   .viewer {
@@ -153,7 +154,7 @@
   </section>
 </main>
 
-<footer><div class="wrap">© <span id="year"></span> <span data-i18n="name">Leo Efimoff</span></div></footer>
+<footer><div class="wrap"><span>© <span id="year"></span> <span data-i18n="name">Leo Efimoff</span></span><span class="credit">Site design — Marat Fayzullin, Stanislav Vaganov</span></div></footer>
 
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Photo">
   <div class="bar">
