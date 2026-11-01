@@ -5,17 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Leo Efimoff — desktop</title>
 <style>
-html,body{margin:0;padding:0;background:#fff;overflow-x:hidden}
+html,body{margin:0;padding:0;height:100%;background:#fff;overflow:hidden}
 #stage{position:relative;overflow:hidden;margin:0 auto}
-iframe{display:block;border:0;background:#fff;transform-origin:top left;position:absolute;top:0;left:0;scrollbar-width:none}
-iframe::-webkit-scrollbar{display:none}
+iframe{display:block;border:0;background:#fff;transform-origin:top left;position:absolute;top:0;left:0}
 </style>
 </head>
 <body>
-<div id="stage"><iframe id="site" title="Leo Efimoff — desktop" src="index.html" scrolling="no"></iframe></div>
+<div id="stage"><iframe id="site" title="Leo Efimoff — desktop" src="index.html"></iframe></div>
 <script>
 const frame=document.getElementById('site'),stage=document.getElementById('stage');
-const W=1440, SLACK=24;
+const W=1440;
 // Remember the current page across reloads instead of snapping back to Works.
 const PAGES=['index.html','about.html','contacts.html'];
 try{const s=localStorage.getItem('preview-page');if(s&&PAGES.includes(s))frame.src=s;}catch(e){}
@@ -26,28 +25,23 @@ frame.addEventListener('load',()=>{
     if(PAGES.includes(p))localStorage.setItem('preview-page',p);
   }catch(e){}
 });
-function contentHeight(){
-  try{
-    const d=frame.contentDocument;
-    if(d&&d.documentElement){
-      const h=Math.max(d.documentElement.scrollHeight, d.body?d.body.scrollHeight:0);
-      if(h>0)return h;
-    }
-  }catch(e){}
-  return 1000;
-}
+// The frame is a real 1440px viewport, scaled to fit the screen; the page scrolls
+// INSIDE it. Stretching the frame to the full document height broke position:fixed:
+// the full-screen photo viewer was pinned to the top of a ~4700px canvas, so you had
+// to scroll back up (or down) to see the photo you just clicked.
 function layout(){
-  const avail=document.documentElement.clientWidth;
-  const h=contentHeight()+SLACK;
-  const scale=Math.max(0.1, avail/W);
+  const availW=document.documentElement.clientWidth;
+  const availH=document.documentElement.clientHeight;
+  const scale=Math.max(0.1, availW/W);
+  const cssH=Math.ceil(availH/scale);
   frame.style.width=W+'px';
-  frame.style.height=h+'px';
+  frame.style.height=cssH+'px';
   frame.style.transform=`scale(${scale})`;
   stage.style.width=Math.floor(W*scale)+'px';
-  stage.style.height=Math.floor(h*scale)+'px';
+  stage.style.height=Math.floor(cssH*scale)+'px';
 }
-frame.addEventListener('load',()=>{layout();window.scrollTo(0,0);setTimeout(layout,400);setTimeout(layout,1200);});
-window.addEventListener('resize',()=>{layout();window.scrollTo(0,0);});
+frame.addEventListener('load',layout);
+window.addEventListener('resize',layout);
 layout();
 </script>
 </body>

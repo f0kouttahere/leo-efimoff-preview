@@ -33,18 +33,11 @@ frame.addEventListener('load',()=>{
   }catch(e){}
 });
 let mode=localStorage.getItem('preview-mode')==='desktop'?'desktop':'mobile';
-function contentHeight(vh){
-  try{
-    const d=frame.contentDocument;
-    if(d&&d.documentElement){
-      const h=Math.max(d.documentElement.scrollHeight, d.body?d.body.scrollHeight:0);
-      if(h>0)return h;
-    }
-  }catch(e){}
-  return vh;
-}
-function layout(){const [w,vh]=mode==='mobile'?[390,844]:[1440,1000];const h=Math.max(vh,contentHeight(vh));const scale=Math.min(1,Math.max(0.2,(document.documentElement.clientWidth-32)/w));frame.style.width=w+'px';frame.style.height=h+'px';frame.style.transform=`scale(${scale})`;stage.style.width=(w*scale)+'px';stage.style.height=(h*scale)+'px';for(const name of ['mobile','desktop'])document.getElementById(name).setAttribute('aria-pressed',String(mode===name));}
-frame.addEventListener('load',()=>{layout();setTimeout(layout,400);setTimeout(layout,1200);});
+// The frame is a real browser viewport (390 or 1440 px) scaled down; the page scrolls
+// INSIDE it. Stretching it to the document height broke position:fixed, so the
+// full-screen photo viewer opened at the top of the whole page instead of on screen.
+function layout(){const [w,h]=mode==='mobile'?[390,844]:[1440,1000];const scale=Math.min(1,Math.max(0.15,(document.documentElement.clientWidth-32)/w));frame.style.width=w+'px';frame.style.height=h+'px';frame.style.transform=`scale(${scale})`;stage.style.width=(w*scale)+'px';stage.style.height=(h*scale)+'px';for(const name of ['mobile','desktop'])document.getElementById(name).setAttribute('aria-pressed',String(mode===name));}
+frame.addEventListener('load',layout);
 for(const name of ['mobile','desktop'])document.getElementById(name).onclick=()=>{mode=name;localStorage.setItem('preview-mode',mode);layout();};
 function refresh(){const url=new URL(frame.contentWindow.location.href);url.searchParams.set('preview',Date.now());frame.src=url.href;status.textContent='Обновлено · автообновление включено';}
 document.getElementById('refresh').onclick=refresh;
