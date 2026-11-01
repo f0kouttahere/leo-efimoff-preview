@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leo Efimoff — desktop</title>
+<style>
+html,body{margin:0;padding:0;background:#fff}
+#stage{position:relative;overflow:hidden}
+iframe{display:block;border:0;background:#fff;transform-origin:top left;position:absolute;top:0;left:0}
+</style>
+</head>
+<body>
+<div id="stage"><iframe id="site" title="Leo Efimoff — desktop" src="index.html"></iframe></div>
+<script>
+const frame=document.getElementById('site'),stage=document.getElementById('stage');
+const W=1440;
+function contentHeight(){
+  try{
+    const d=frame.contentDocument;
+    if(d&&d.documentElement){
+      const h=Math.max(d.documentElement.scrollHeight, d.body?d.body.scrollHeight:0);
+      if(h>0)return h;
+    }
+  }catch(e){}
+  return 1000;
+}
+function layout(){
+  const h=contentHeight();
+  const scale=Math.min(1, Math.max(0.15,(document.documentElement.clientWidth)/W));
+  frame.style.width=W+'px';
+  frame.style.height=h+'px';
+  frame.style.transform=`scale(${scale})`;
+  stage.style.width=(W*scale)+'px';
+  stage.style.height=(h*scale)+'px';
+}
+frame.addEventListener('load',()=>{layout();setTimeout(layout,400);setTimeout(layout,1200);});
+window.addEventListener('resize',layout);
+layout();
+</script>
+</body>
+</html>
