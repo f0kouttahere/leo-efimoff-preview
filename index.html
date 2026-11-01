@@ -183,7 +183,7 @@
       item.innerHTML = `<div class="frame"><img src="${small(w)}"
           srcset="${small(w)} 720w, ${full(w)} 1440w"
           sizes="(max-width: 760px) 50vw, (max-width: 1399px) 33vw, 420px"
-          alt="${alt(w, i)}" loading="${i < 6 ? "eager" : "lazy"}" decoding="async"></div>`;
+          alt="${alt(w, i)}" loading="eager" decoding="async" fetchpriority="${i < 6 ? "high" : "auto"}"></div>`;
       const img = item.querySelector("img");
       if (img.complete) img.classList.add("loaded");
       else img.onload = () => img.classList.add("loaded");
