@@ -89,7 +89,7 @@
   .viewer figcaption span { display: block; color: var(--muted); font-size: 12px; }
 
   /* Swipe affordance: a dot travelling along a faint dotted track — reads as "drag".
-     Shown for two seconds after a photo opens, then fades out to keep the viewer bare. */
+     Shown for three seconds after a photo opens, then fades out to keep the viewer bare. */
   .swipe-hint {
     position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
     color: var(--muted); pointer-events: auto; cursor: default;
@@ -230,14 +230,14 @@
   function openViewer(i) { show(i); viewer.classList.add("open"); document.body.classList.add("locked"); flashSwipeHint(); }
   function closeViewer() { viewer.classList.remove("open"); document.body.classList.remove("locked"); hideSwipeHint(); }
 
-  // Swipe hint: visible for two seconds each time a photo opens, then gone.
+  // Swipe hint: visible for three seconds each time a photo opens, then gone.
   const swipeHint = document.querySelector(".swipe-hint");
   let swipeHintTimer = null;
   function flashSwipeHint() {
     if (!swipeHint || window.matchMedia("(min-width: 761px)").matches) return;
     swipeHint.classList.add("show");
     clearTimeout(swipeHintTimer);
-    swipeHintTimer = setTimeout(() => swipeHint.classList.remove("show"), 2000);
+    swipeHintTimer = setTimeout(() => swipeHint.classList.remove("show"), 3000);
   }
   function hideSwipeHint() {
     clearTimeout(swipeHintTimer);
