@@ -20,7 +20,7 @@
 const frame=document.getElementById('site'),stage=document.getElementById('stage'),status=document.getElementById('status');
 if(new URLSearchParams(location.search).get('page')==='about')frame.src='about.html';
 let mode=localStorage.getItem('preview-mode')==='desktop'?'desktop':'mobile';
-function layout(){const [w,h]=mode==='mobile'?[390,844]:[1440,1000];const scale=Math.min(1,Math.max(1,document.documentElement.clientWidth-32)/w);frame.style.width=w+'px';frame.style.height=h+'px';frame.style.transform=`scale(${scale})`;stage.style.width=w*scale+'px';stage.style.height=h*scale+'px';for(const name of ['mobile','desktop'])document.getElementById(name).setAttribute('aria-pressed',String(mode===name));}
+function layout(){const [w,h]=mode==='mobile'?[390,844]:[1440,1000];const scale=Math.min(1,Math.max(1,document.documentElement.clientWidth-32)/w);frame.style.width=w+'px';frame.style.height=(h*scale)+'px';frame.style.transform=`scale(${scale})`;stage.style.width=(w*scale)+'px';stage.style.height=(h*scale)+'px';for(const name of ['mobile','desktop'])document.getElementById(name).setAttribute('aria-pressed',String(mode===name));}
 for(const name of ['mobile','desktop'])document.getElementById(name).onclick=()=>{mode=name;localStorage.setItem('preview-mode',mode);layout();};
 function refresh(){const url=new URL(frame.contentWindow.location.href);url.searchParams.set('preview',Date.now());frame.src=url.href;status.textContent='Обновлено · автообновление включено';}
 document.getElementById('refresh').onclick=refresh;
