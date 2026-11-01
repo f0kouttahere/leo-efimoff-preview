@@ -18,7 +18,20 @@
 <main><div id="stage"><iframe id="site" title="Текущая рабочая версия сайта" src="index.html"></iframe></div></main>
 <script>
 const frame=document.getElementById('site'),stage=document.getElementById('stage'),status=document.getElementById('status');
-if(new URLSearchParams(location.search).get('page')==='about')frame.src='about.html';
+// Remember which page the visitor was on, so reloading the preview does not
+// silently drop them back on Works.
+const PAGES=['index.html','about.html','contacts.html'];
+const pageParam=new URLSearchParams(location.search).get('page');
+let remembered='index.html';
+try{const s=localStorage.getItem('preview-page');if(s&&PAGES.includes(s))remembered=s;}catch(e){}
+frame.src=pageParam?pageParam+'.html':remembered;
+frame.addEventListener('load',()=>{
+  try{
+    let p=frame.contentWindow.location.pathname.split('/').pop();
+    if(!p||p==='')p='index.html';
+    if(PAGES.includes(p))localStorage.setItem('preview-page',p);
+  }catch(e){}
+});
 let mode=localStorage.getItem('preview-mode')==='desktop'?'desktop':'mobile';
 function contentHeight(vh){
   try{

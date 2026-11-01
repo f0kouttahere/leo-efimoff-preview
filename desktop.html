@@ -16,6 +16,16 @@ iframe::-webkit-scrollbar{display:none}
 <script>
 const frame=document.getElementById('site'),stage=document.getElementById('stage');
 const W=1440, SLACK=24;
+// Remember the current page across reloads instead of snapping back to Works.
+const PAGES=['index.html','about.html','contacts.html'];
+try{const s=localStorage.getItem('preview-page');if(s&&PAGES.includes(s))frame.src=s;}catch(e){}
+frame.addEventListener('load',()=>{
+  try{
+    let p=frame.contentWindow.location.pathname.split('/').pop();
+    if(!p||p==='')p='index.html';
+    if(PAGES.includes(p))localStorage.setItem('preview-page',p);
+  }catch(e){}
+});
 function contentHeight(){
   try{
     const d=frame.contentDocument;
