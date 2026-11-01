@@ -131,7 +131,7 @@
   <div class="wrap">
     <a class="name" href="#" data-i18n="name">Leo Efimoff</a>
     <nav>
-      <a href="#works" data-i18n="nav_works">Works</a>
+      <a href="#works" id="nav-works" data-i18n="nav_works">Works</a>
       <a href="about.html" data-i18n="nav_about">About</a>
       <a href="contacts.html" data-i18n="nav_contacts">Contacts</a>
       <span class="langs">
@@ -277,6 +277,13 @@
     renderWorks();
   }
   document.querySelectorAll(".lang").forEach(b => b.onclick = () => setLang(b.dataset.lang));
+  // "Works" is this page: from the gallery it should return to the top, not jump
+  // down to the grid anchor (which looked like an accidental scroll).
+  const navWorks = document.getElementById("nav-works");
+  if (navWorks) navWorks.addEventListener("click", e => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
   document.getElementById("year").textContent = new Date().getFullYear();
   setLang(lang);
 </script>
