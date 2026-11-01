@@ -91,7 +91,8 @@
   /* Swipe affordance: two thin arrows that slide outward, no words. */
   .swipe-hint {
     position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
-    color: var(--muted); pointer-events: none; opacity: 0; transition: opacity .5s ease;
+    color: var(--muted); pointer-events: auto; opacity: 0; transition: opacity .5s ease;
+    cursor: default;
   }
   .viewer.open .swipe-hint { opacity: 1; }
   .swipe-hint svg { width: 64px; height: 16px; display: block; }
@@ -229,6 +230,11 @@
   document.getElementById("next").onclick = e => { e.stopPropagation(); show(current + 1); };
   document.getElementById("close").onclick = closeViewer;
   viewer.onclick = e => { if (e.target === viewer || e.target.tagName === "FIGURE") closeViewer(); };
+  // The swipe hint is decoration: it must not act as a link, and it must not let the
+  // click fall through to the figure underneath, which would close the viewer.
+  document.querySelectorAll(".swipe-hint").forEach(el => {
+    el.addEventListener("click", e => { e.stopPropagation(); e.preventDefault(); });
+  });
   document.addEventListener("keydown", e => {
     if (!viewer.classList.contains("open")) return;
     if (e.key === "Escape") closeViewer();
