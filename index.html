@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Leo Efimoff</title>
-<meta name="description" content="Leo Efimoff — sculpture and objects for interiors.">
+<meta name="description" content="Leo Efimoff. Sculpture and objects for interiors.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -195,7 +195,7 @@
   const counter = document.getElementById("counter");
   const full = w => `images/work-${w.id}.webp`;
   const small = w => `images/work-${w.id}-720.webp`;
-  const alt = (w, i) => w.title ? w.title[lang] : `${TEXT[lang].name} — ${TEXT[lang].work} ${i + 1}`;
+  const alt = (w, i) => w.title ? w.title[lang] : `${TEXT[lang].name}, ${TEXT[lang].work} ${i + 1}`;
   let lang = "en";
   let current = 0;
   try { lang = localStorage.getItem("lang") || (navigator.language.startsWith("es") ? "es" : "en"); } catch (e) {}
