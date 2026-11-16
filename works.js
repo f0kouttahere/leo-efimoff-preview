@@ -1,14 +1,13 @@
-// Gallery contents, in display order (newest first).
-// Each photo has two files in images/: work-NN.webp (1440px, desktop and full-screen view)
-// and work-NN-720.webp (720px, phones and the grid).
-// Add a title to show it under the photo in the full-screen view, e.g.
-//   { id: "01", title: { en: "Wave", es: "Ola" }, meta: { en: "Marble, 60 cm", es: "Mármol, 60 cm" } },
+// Обложки работ: порядок задаётся здесь. Одна карточка = одна работа.
+// { id } — работа видна, { id, hidden: true } — спрятана с сайта.
+// Файлы: images/work-NN.webp (1440), images/work-NN-720.webp (720).
+
 window.WORKS = [
+  { id: "03" },
   { id: "01" },
   { id: "02" },
-  { id: "03" },
   { id: "04" },
-  { id: "05" },
+  { id: "05", hidden: true },
   { id: "06" },
   { id: "07" },
   { id: "08" },
