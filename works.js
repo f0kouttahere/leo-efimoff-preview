@@ -3,11 +3,11 @@
 // Файлы: images/work-NN.webp (1440), images/work-NN-720.webp (720).
 
 window.WORKS = [
-  { id: "03" },
   { id: "01" },
   { id: "02" },
+  { id: "03" },
   { id: "04" },
-  { id: "05", hidden: true },
+  { id: "05" },
   { id: "06" },
   { id: "07" },
   { id: "08" },
@@ -42,5 +42,5 @@ window.WORKS = [
   { id: "38" },
   { id: "39" },
   { id: "40" },
-  { id: "41" },
+  { id: "41", hidden: true },
 ];
