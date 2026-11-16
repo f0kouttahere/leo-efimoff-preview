@@ -42,5 +42,5 @@ window.WORKS = [
   { id: "38" },
   { id: "39" },
   { id: "40" },
-  { id: "41", hidden: true },
+  { id: "41" },
 ];
