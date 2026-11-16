@@ -189,7 +189,8 @@
     }
   };
 
-  const works = window.WORKS;
+  // hidden: true — работа спрятана из сетки (панель галереи).
+  const works = window.WORKS.filter(w => !w.hidden);
   const grid = document.getElementById("grid");
   const viewer = document.getElementById("viewer");
   const viewerImg = document.getElementById("viewer-img");
